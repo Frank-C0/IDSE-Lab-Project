@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private float fuerza_propulcion = 2000f;
-    private float fuerza_giro = 100f;
+    private float fuerza_propulcion = 200f;
+    private float fuerza_giro = 20f;
     private Rigidbody rb;
 
     void Start()
@@ -32,25 +32,24 @@ public class PlayerController : MonoBehaviour
     }
     private void Propulsar()
     {
-        print("Propulsando - Tecla Space");
-
-        rb.AddForce(
-            transform.up * fuerza_propulcion * Time.deltaTime, 
+        print("Tecla Space - Propulsando");
+        rb.AddRelativeForce(    
+            Vector3.up * fuerza_propulcion * Time.deltaTime, 
             ForceMode.Impulse
             );
     }
     private void GirarIzquierda()
     {
-        print("Girando a la izquierda - Tecla A");
-        rb.AddTorque(
+        print("Tecla A - Girando a la izquierda");
+        rb.AddRelativeTorque(
             Vector3.forward * fuerza_giro * Time.deltaTime, 
             ForceMode.Impulse
         );
     }
     private void GirarDerecha()
     {
-        print("Girando a la derecha - Tecla D");
-        rb.AddTorque(
+        print("Tecla D - Girando a la derecha");
+        rb.AddRelativeTorque(
             Vector3.back * fuerza_giro * Time.deltaTime, 
             ForceMode.Impulse
         );
