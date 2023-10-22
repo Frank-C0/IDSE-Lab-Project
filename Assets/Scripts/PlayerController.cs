@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private Rigidbody rb;
     private float fuerza_propulcion = 200f;
     private float fuerza_giro = 20f;
-    private Rigidbody rb;
+    
+    private Transform transfomC;
+    private const float velocidadRotacion = 0.3f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        transfomC = GetComponent<Transform>();
     }
     private bool propulsando = false;
     private bool girandoIzquierda = false;
@@ -53,5 +57,21 @@ public class PlayerController : MonoBehaviour
             Vector3.back * fuerza_giro * Time.deltaTime, 
             ForceMode.Impulse
         );
+    }
+
+    private void GirarIzquierdaTransform()
+    {
+        print("Tecla A - Girando a la izquierda");
+        var rotarIzquierda = transfomC.rotation;
+        rotarIzquierda.z += velocidadRotacion * Time.deltaTime;
+        transfomC.rotation = rotarIzquierda;
+    }
+    private void GirarDerechaTransform()
+    {
+
+        print("Tecla D - Girando a la derecha");
+        var rotarDerecha = transfomC.rotation;
+        rotarDerecha.z -= velocidadRotacion * Time.deltaTime;
+        transfomC.rotation = rotarDerecha;
     }
 }
