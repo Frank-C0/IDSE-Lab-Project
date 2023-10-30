@@ -11,10 +11,17 @@ public class PlayerController : MonoBehaviour
     private Transform transfomC;
     private const float velocidadRotacion = 0.3f;
 
+    private AudioSource audioSource;
+    private ParticleSystem[] propulsionParticlesSystems;
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         transfomC = GetComponent<Transform>();
+        audioSource = GetComponent<AudioSource>();
+
+        propulsionParticlesSystems = GetComponentsInChildren<ParticleSystem>();
     }
     private bool propulsando = false;
     private bool girandoIzquierda = false;
@@ -27,12 +34,23 @@ public class PlayerController : MonoBehaviour
         girandoDerecha = Input.GetKey(KeyCode.D);
 
         if (propulsando)
-            Propulsar();
+        {
+            Propulsar();           
+        }
+        else
+        {
+            DejarDePropulsar();
+        }
 
         if (girandoIzquierda)
             GirarIzquierda();
         else if (girandoDerecha)
             GirarDerecha();   
+    }
+    private void DejarDePropulsar()
+    {
+        audioSource.Stop();
+        StopAllPropulsionParticles();
     }
     private void Propulsar()
     {
@@ -41,6 +59,9 @@ public class PlayerController : MonoBehaviour
             Vector3.up * fuerza_propulcion * Time.deltaTime, 
             ForceMode.Impulse
             );
+        if (!audioSource.isPlaying)
+            audioSource.Play();
+        PlayAllPropulsionParticles();
     }
     private void GirarIzquierda()
     {
@@ -73,5 +94,23 @@ public class PlayerController : MonoBehaviour
         var rotarDerecha = transfomC.rotation;
         rotarDerecha.z -= velocidadRotacion * Time.deltaTime;
         transfomC.rotation = rotarDerecha;
+    }
+
+    private void StopAllPropulsionParticles()
+    {
+        foreach (var particleSystem in propulsionParticlesSystems)
+        {
+            particleSystem.Stop();
+        }
+    }
+    private void PlayAllPropulsionParticles()
+    {
+        foreach (var particleSystem in propulsionParticlesSystems)
+        {
+            if (!particleSystem.isPlaying)
+            {
+                particleSystem.Play();
+            }
+        }
     }
 }
