@@ -113,4 +113,20 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        switch (collision.gameObject.tag)
+        {
+            case "ColisionPlataformaSegura":
+                print("Colision plataforma Segura");
+                break;
+            case "ColisionPlataformaPeligrosa":
+                print("Colision plataforma Peligrosa");
+                break;
+            default:
+                print("Otro tipo de colision");
+                break;
+        }
+    }
 }
